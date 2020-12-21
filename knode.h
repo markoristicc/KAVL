@@ -6,8 +6,8 @@ class knode{
         knode();
         knode(int w, int f);
         int whole, frac, height;
-        knode *left;
-        knode *right;
+        knode *left = nullptr;
+        knode *right = nullptr;
 };
 
 #endif
