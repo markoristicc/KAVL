@@ -1,14 +1,13 @@
 #ifndef KNODE_H
-#define NODE_H
+#define KNODE_H
 
-class Node{
+class knode{
     public:
-        Node();
-        ~Node();
-        Node(int w, int f);
+        knode();
+        knode(int w, int f);
         int whole, frac, height;
-        Node *left;
-        Node *right;
-}
+        knode *left;
+        knode *right;
+};
 
 #endif

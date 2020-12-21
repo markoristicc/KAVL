@@ -1,20 +1,12 @@
 #include "knode.h"
 
-Node::Node(){
+knode::knode(){
     whole = 0;
     frac = 0;
-    height = 1;
-    left = NULL;
-    right = NULL;
+    height = 0;
 };
-Node::Node(int w, int f){
+knode::knode(int w, int f){
     whole = w;
     frac = f;
-    height = 1;
-    left = NULL;
-    right = NULL;
+    height = 0;
 };
-~Node::Node(){
-    delete right;
-    delete left;
-}

@@ -9,17 +9,22 @@ class KAVL{
         bool ins(int w, int f);
         bool del(int w, int f);
         bool search(int w, int f);
-        knode approx(int w, int f);
-        void inOrder();
-        void preOrder();
+        knode* approx(int w, int f);
+        void inprint();
+        void preprint();
+        void inOrder(knode *r);
+        void preOrder(knode *r);
     private:
         knode* insert(knode *r, int w, int f);
+        knode* del(knode *r, int w, int f);
         knode* rightRotate(knode *z);
         knode* leftRotate(knode *z);
-        Node *root;
+        knode* inOrderPredecessor(knode  *r);
+        void destruct(knode *r);
+        knode *root;
         int count = 0;
         int k = 0;
         //restruct() ---- figure out everything else THEN restruct
-}
+};
 
 #endif
