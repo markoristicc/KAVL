@@ -17,7 +17,6 @@ int main(int argc, char *argv[]){
     string tmp = s.substr(0,position);
     string tmp2 = "";
     k = stoi(tmp);
-    cout<<k<<endl;
     KAVL tree = KAVL(k);
     s.erase(0, position+2);
     while((position = s.find(parse)) != string::npos){

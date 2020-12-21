@@ -105,10 +105,8 @@ knode* KAVL::insert(knode *r, int w, int f){
         else if(f > r->frac)
             r->left = insert(r->left, w, f);
     }
-    if(r->left != nullptr && r->right != nullptr){
-        r->height = max(r->left->height,r->right->height) + 1;
-        balance = r->left->height - r->right->height;
-    } else r->height = 0;
+    r->height = max(r->left->height,r->right->height) + 1;
+    balance = r->left->height - r->right->height;
     balance = 0;
     if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
         rightRotate(r);
