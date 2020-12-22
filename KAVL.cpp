@@ -94,7 +94,13 @@ knode* KAVL::insert(knode *r, int w, int f){
     int balance;
     if(r == nullptr){
         count++;
-        return new knode(w,f);
+        r = (knode *)malloc(sizeof(knode));
+        r->left = nullptr;
+        r->right = nullptr;
+        r->height = 0;
+        r->whole = w;
+        r->frac = f;
+        return root;
     }else if(w < r->whole)
         r->right = insert(r->right, w, f);
     else if(w > r->whole)
@@ -109,16 +115,16 @@ knode* KAVL::insert(knode *r, int w, int f){
     balance = r->left->height - r->right->height;
     balance = 0;
     if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
-        rightRotate(r);
+        return rightRotate(r);
     if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
-        leftRotate(r);
+        return leftRotate(r);
     if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
         r->left = leftRotate(r->left);
-        rightRotate(r);
+        return rightRotate(r);
     }
     if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
         r->right = rightRotate(r->right);
-        leftRotate(r);
+        return leftRotate(r);
     }
     return r;
 };
@@ -149,23 +155,23 @@ knode* KAVL::del(knode *r, int w, int f){
                 r->frac = tmp->frac;
                 r->left = tmp->left;
                 r->right = tmp->right;
-                delete tmp; //this seems wrong as shit
+                delete tmp; 
             }
         }
     }   
     r->height = max(r->left->height,r->right->height) + 1;
     int balance = r->left->height - r->right->height;
     if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
-        rightRotate(r);
+        return rightRotate(r);
     if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
-        leftRotate(r);
+        return leftRotate(r);
     if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
         r->left = leftRotate(r->left);
-        rightRotate(r);
+        return rightRotate(r);
     }
     if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
         r->right = rightRotate(r->right);
-        leftRotate(r);
+        return leftRotate(r);
     }
     return r;
 };

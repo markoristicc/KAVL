@@ -18,6 +18,7 @@ int main(int argc, char *argv[]){
     string tmp2 = "";
     k = stoi(tmp);
     KAVL tree = KAVL(k);
+    tree.ins(2,1);
     s.erase(0, position+2);
     while((position = s.find(parse)) != string::npos){
         tmp = s.substr(0,position);
@@ -32,41 +33,40 @@ int main(int argc, char *argv[]){
             tmp2 = tmp.substr(0,pos);
             tmp.erase(0,pos+1);
             if(tmp2 == "insert"){
-                pos = tmp2.find(" ");
-                cout<<tmp2.substr(0,pos);
-                w = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
-                pos = tmp2.find(" ");
-                f = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
+                pos = tmp.find(" ");
+                w = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
+                pos = tmp.find(" ");
+                f = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
                 if(tree.ins(w,f))
-                    cout<<w<<"."<<f<<"inserted"<<endl;
+                    cout<<w<<"."<<f<<" inserted"<<endl;
             }if(tmp2 == "search"){
-                pos = tmp2.find(" ");
-                w = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
-                pos = tmp2.find(" ");
-                f = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
+                pos = tmp.find(" ");
+                w = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
+                pos = tmp.find(" ");
+                f = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
                 if(tree.search(w,f))
-                    cout<<w<<"."<<f<<"found"<<endl;
-                else cout<<w<<"."<<f<<"not found"<<endl;
+                    cout<<w<<"."<<f<<" found"<<endl;
+                else cout<<w<<"."<<f<<" not found"<<endl;
             }if(tmp2 == "approx_search"){
-                pos = tmp2.find(" ");
-                w = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
-                pos = tmp2.find(" ");
-                f = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
+                pos = tmp.find(" ");
+                w = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
+                pos = tmp.find(" ");
+                f = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
                 a = tree.approx(w,f);
-                cout<<"closest to"<<w<<"."<<f<<"is "<<a->whole<<"."<<a->frac;
+                cout<<"closest to "<<w<<"."<<f<<" is "<<a->whole<<"."<<a->frac<<endl;
             }if(tmp2 == "delete"){
-                pos = tmp2.find(" ");
-                w = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
-                pos = tmp2.find(" ");
-                f = stoi(tmp2.substr(0, pos));
-                tmp2.erase(0,pos+1);
+                pos = tmp.find(" ");
+                w = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
+                pos = tmp.find(" ");
+                f = stoi(tmp.substr(0, pos));
+                tmp.erase(0,pos+1);
                 if(tree.del(w,f))
                     cout<<w<<"."<<f<<" deleted"<<endl;
             }

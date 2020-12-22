@@ -21,7 +21,7 @@ class KAVL{
         knode* leftRotate(knode *z);
         knode* inOrderPredecessor(knode *r);
         void destruct(knode *r);
-        knode *root =nullptr;
+        knode *root = nullptr;
         int count = 0;
         int k = 0;
         //restruct() ---- figure out everything else THEN restruct
