@@ -27,6 +27,7 @@ class KAVL{
         int count = 0;
         int k = 0;
         int m = 0;
+        int c = 0;
         //restruct() ---- figure out everything else THEN restruct
 };
 

@@ -73,13 +73,15 @@ knode* KAVL::approx(int w, int f){
     return closest;
 };
 void KAVL::inprint(){
+    c = count;
     inOrder(root);
 };
 void KAVL::inOrder(knode *r){
     if(r != nullptr){
         inOrder(r->left);
         cout<<r->whole<<"."<<r->frac;
-        if((r->whole * 10) + r->frac != m)
+        c--;
+        if(c > 0)
             cout<<" ";
         inOrder(r->right);
     }
