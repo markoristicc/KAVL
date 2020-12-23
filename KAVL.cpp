@@ -11,6 +11,8 @@ KAVL::~KAVL(){
     destruct(root);
 };
 bool KAVL::ins(int w, int f){
+    if(m < 10*w + f)
+        m = 10*w + f;
     int tmp = count;
     root = insert(root, w, f);
     if(tmp == count)
@@ -78,11 +80,11 @@ void KAVL::inprint(){
 };
 void KAVL::inOrder(knode *r){
     if(r != nullptr){
-        if(r->left != nullptr)
-            inOrder(r->left);
-        cout<<r->whole<<"."<<r->frac<<" ";
-        if(r->right != nullptr)
-            inOrder(r->right);
+        inOrder(r->left);
+        cout<<r->whole<<"."<<r->frac;
+        if((r->whole * 10) + r->frac != m)
+            cout<<" ";
+        inOrder(r->right);
     }
 };
 void KAVL::preprint(){
@@ -91,7 +93,6 @@ void KAVL::preprint(){
 void KAVL::preOrder(knode *r){
     if(r == nullptr)
         return;
-    
     if(r != root)
         cout<<" ";
     cout<<r->whole<<"."<<r->frac;

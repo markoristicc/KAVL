@@ -26,6 +26,7 @@ class KAVL{
         knode *root = nullptr;
         int count = 0;
         int k = 0;
+        int m = 0;
         //restruct() ---- figure out everything else THEN restruct
 };
 
