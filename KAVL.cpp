@@ -73,9 +73,11 @@ void KAVL::inprint(){
 };
 void KAVL::inOrder(knode *r){
     if(r != nullptr){
-        inOrder(r->left);
+        if(r->left != nullptr)
+            inOrder(r->left);
         cout<<r->whole<<"."<<r->frac<<" ";
-        inOrder(r->right);
+        if(r->right != nullptr)
+            inOrder(r->right);
     }
 };
 void KAVL::preprint(){
@@ -86,34 +88,31 @@ void KAVL::preOrder(knode *r){
         if(r != root)
             cout<<" ";
         cout<<r->whole<<"."<<r->frac;
-        preOrder(r->left);
-        preOrder(r->right);
+        if(r->left != nullptr)
+            preOrder(r->left);
+        if(r->right != nullptr)
+            preOrder(r->right);
     }
 };
 knode* KAVL::insert(knode *r, int w, int f){
-    int balance;
     if(r == nullptr){
         count++;
-        r = (knode *)malloc(sizeof(knode));
-        r->left = nullptr;
-        r->right = nullptr;
-        r->height = 0;
-        r->whole = w;
-        r->frac = f;
-        return root;
+        knode *n;
+        n = new knode(w,f);
+        r = n;
+        return r;
     }else if(w < r->whole)
-        r->right = insert(r->right, w, f);
-    else if(w > r->whole)
         r->left = insert(r->left, w, f);
+    else if(w > r->whole)
+        r->right = insert(r->right, w, f);
     else if(w == r->whole){
         if(f < r->frac)
-            r->right = insert(r->right, w, f);
-        else if(f > r->frac)
             r->left = insert(r->left, w, f);
+        else if(f > r->frac)
+            r->right = insert(r->right, w, f);
     }
-    r->height = max(r->left->height,r->right->height) + 1;
-    balance = r->left->height - r->right->height;
-    balance = 0;
+    r->height = getHeight(r);
+    int balance = getBalance(r);
     if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
         return rightRotate(r);
     if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
@@ -159,8 +158,8 @@ knode* KAVL::del(knode *r, int w, int f){
             }
         }
     }   
-    r->height = max(r->left->height,r->right->height) + 1;
-    int balance = r->left->height - r->right->height;
+    r->height = getHeight(r);
+    int balance = getBalance(r);
     if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
         return rightRotate(r);
     if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
@@ -180,8 +179,8 @@ knode* KAVL::rightRotate(knode *z){
     knode *T3 = y->right;
     z->left = T3;
     y->right = z;
-    z->height = max(z->left->height, z->right->height) + 1;
-    y->height = max(y->left->height, y->right->height) + 1;
+    z->height = getHeight(z);
+    y->height = getHeight(y);
     return y;
 };
 knode* KAVL::leftRotate(knode *z){
@@ -189,8 +188,8 @@ knode* KAVL::leftRotate(knode *z){
     knode *T2 = y->left;
     z->right = T2;
     y->left = z;
-    z->height = max(z->left->height, z->right->height) + 1;
-    y->height = max(y->left->height, y->right->height) + 1;
+    z->height = getHeight(z);
+    y->height = getHeight(y);
     return y;
 };
 knode* KAVL::inOrderPredecessor(knode *r){
@@ -199,10 +198,28 @@ knode* KAVL::inOrderPredecessor(knode *r){
         tmp = tmp->right;
     return tmp;
 };
+int KAVL::getHeight(knode *r){
+    if(r->left != nullptr && r->right != nullptr)
+        return max(r->left->height, r->right->height)+1;
+    else if(r->left == nullptr)
+        return r->right->height + 1;
+    else if(r->right == nullptr)
+        return r->left->height + 1;
+    else return 1;
+};
+int KAVL::getBalance(knode *r){
+    if(r->left != nullptr && r->right != nullptr)
+        return r->left->height - r->right->height;
+    else if(r->left == nullptr)
+        return -1*(r->right->height);
+    else if(r->right == nullptr)
+        return r->left->height;
+    else return 0;
+}
 void KAVL::destruct(knode *r){
     if(r != nullptr){
-        del(r->left,r->left->whole,r->left->frac);
-        del(r->right,r->right->whole,r->right->frac);
+        destruct(r->left);
+        destruct(r->right);
         r = nullptr;
         delete r;
     }

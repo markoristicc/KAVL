@@ -20,6 +20,8 @@ class KAVL{
         knode* rightRotate(knode *z);
         knode* leftRotate(knode *z);
         knode* inOrderPredecessor(knode *r);
+        int getHeight(knode *r);
+        int getBalance(knode *r);
         void destruct(knode *r);
         knode *root = nullptr;
         int count = 0;

@@ -18,16 +18,17 @@ int main(int argc, char *argv[]){
     string tmp2 = "";
     k = stoi(tmp);
     KAVL tree = KAVL(k);
-    tree.ins(2,1);
     s.erase(0, position+2);
     while((position = s.find(parse)) != string::npos){
         tmp = s.substr(0,position);
         s.erase(0, position + 2);
-        if(tmp == "in_order")
+        if(tmp == "in_order"){
             tree.inprint();
-        else if(tmp == "pre_order")
+            cout<<endl;
+        }else if(tmp == "pre_order"){
             tree.preprint();
-        else{
+            cout<<endl;
+        }else{
             tmp+=" ";
             pos = tmp.find(" ");
             tmp2 = tmp.substr(0,pos);
