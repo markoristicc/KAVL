@@ -84,15 +84,11 @@ void KAVL::preprint(){
     preOrder(root);
 }
 void KAVL::preOrder(knode *r){
-    if(r != nullptr){
-        if(r != root)
-            cout<<" ";
-        cout<<r->whole<<"."<<r->frac;
-        if(r->left != nullptr)
-            preOrder(r->left);
-        if(r->right != nullptr)
-            preOrder(r->right);
-    }
+    if(r == nullptr)
+        return;
+    cout<<r->whole<<"."<<r->frac<<" ";
+    preOrder(r->left);
+    preOrder(r->right);
 };
 knode* KAVL::insert(knode *r, int w, int f){
     if(r == nullptr){
@@ -150,13 +146,16 @@ knode* KAVL::del(knode *r, int w, int f){
                 delete r;
             }else if(r->left != nullptr){
                 count--;
-                knode *tmp = inOrderPredecessor(r->left);
+                knode *tmp;
+                tmp = inOrderPredecessor(r->left);
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
                 tmp = nullptr;
                 delete tmp;
             }else if(r->right != nullptr){
-                knode *tmp = r->right;
+                count--;
+                knode *tmp;
+                tmp = r->right;
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
                 r->left = tmp->left;
@@ -193,8 +192,6 @@ knode* KAVL::rightRotate(knode *z){
     t = y->left;
     y->left = t->right;
     t->right = y;
-    y->height = getHeight(y);
-    t->height = getHeight(t);
     return t; 
 };
 knode* KAVL::leftRotate(knode *z){
@@ -204,8 +201,6 @@ knode* KAVL::leftRotate(knode *z){
     t = y->right;
     y->right = t->left;
     t->left = y;
-    y->height = getHeight(y);
-    t->height = getHeight(t);
     return t; 
 };
 knode* KAVL::inOrderPredecessor(knode *r){
