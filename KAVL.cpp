@@ -47,9 +47,14 @@ knode* KAVL::approx(int w, int f){
     knode *tmp = root;
     knode *closest = root;
     double difference = abs(root->whole + (0.1*root->frac) - w - (0.1*f));
+    difference *= 10;
+    int d = difference;
     while(tmp != nullptr){
-        if(difference < abs(tmp->whole + (0.1*tmp->frac) - w - (0.1*f))){
-            difference = abs(tmp->whole + 0.1*tmp->frac - w - (0.1*f));
+        difference = abs(tmp->whole + (0.1*tmp->frac) - w - (0.1*f));
+        difference *= 10;
+        int c = d;
+        if(d < c){
+            d = c;
             closest = tmp;
         }
         if(w < tmp->whole){
@@ -86,7 +91,10 @@ void KAVL::preprint(){
 void KAVL::preOrder(knode *r){
     if(r == nullptr)
         return;
-    cout<<r->whole<<"."<<r->frac<<" ";
+    
+    if(r != root)
+        cout<<" ";
+    cout<<r->whole<<"."<<r->frac;
     preOrder(r->left);
     preOrder(r->right);
 };
