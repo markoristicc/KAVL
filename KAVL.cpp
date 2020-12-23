@@ -113,17 +113,21 @@ knode* KAVL::insert(knode *r, int w, int f){
     }
     r->height = getHeight(r);
     int balance = getBalance(r);
-    if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
-        return rightRotate(r);
-    if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
-        return leftRotate(r);
-    if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
-        r->left = leftRotate(r->left);
-        return rightRotate(r);
+    if(r->left != nullptr){
+        if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
+            return rightRotate(r);
+        if(balance > k && (w > r->left->whole || (w == r->left->whole && f > r->left->frac))){
+            r->left = leftRotate(r->left);
+            return rightRotate(r);
+        }
     }
-    if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
-        r->right = rightRotate(r->right);
-        return leftRotate(r);
+    if(r->right != nullptr){
+        if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
+            return leftRotate(r);
+        if(balance < -k && (w < r->right->whole || (w == r->right->whole && f < r->right->frac))){
+            r->right = rightRotate(r->right);
+            return leftRotate(r);
+        }
     }
     return r;
 };
@@ -131,69 +135,82 @@ knode* KAVL::del(knode *r, int w, int f){
     if(r == nullptr)
         return nullptr;
     else if(w < r->whole)
-        r->right = del(r->right, w, f);
-    else if(w > r->whole)
         r->left = del(r->left, w, f);
+    else if(w > r->whole)
+        r->right = del(r->right, w, f);
     else if(w == r->whole){
         if(f < r->frac)
-            r->right = del(r->right, w, f);
-        else if(f > r->frac)
             r->left = del(r->left, w, f);
+        else if(f > r->frac)
+            r->right = del(r->right, w, f);
         else{
             if(r->left == nullptr && r->right == nullptr){
+                count--;
                 r = nullptr;
                 delete r;
             }else if(r->left != nullptr){
+                count--;
                 knode *tmp = inOrderPredecessor(r->left);
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
-                r->left = del(r->left, tmp->whole, tmp->frac);
+                tmp = nullptr;
+                delete tmp;
             }else if(r->right != nullptr){
                 knode *tmp = r->right;
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
                 r->left = tmp->left;
                 r->right = tmp->right;
+                tmp = nullptr;
                 delete tmp; 
             }
         }
     }   
     r->height = getHeight(r);
     int balance = getBalance(r);
-    if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
-        return rightRotate(r);
-    if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
-        return leftRotate(r);
-    if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
-        r->left = leftRotate(r->left);
-        return rightRotate(r);
+    if(r->left != nullptr){
+        if(balance > k && (w < r->left->whole || (w == r->left->whole && f < r->left->frac)))
+            return rightRotate(r);
+        if(balance > k && (w > r->left->whole || (w == r->left->whole && f > r->left->frac))){
+            r->left = leftRotate(r->left);
+            return rightRotate(r);
+        }
     }
-    if(balance > k && (w > r->left->whole || (w == r->left->whole && f >r->left->frac))){
-        r->right = rightRotate(r->right);
-        return leftRotate(r);
+    if(r->right != nullptr){
+        if(balance < -k && (w > r->right->whole || (w == r->right->whole && f > r->right->frac)))
+            return leftRotate(r);
+        if(balance < -k && (w < r->right->whole || (w == r->right->whole && f < r->right->frac))){
+            r->right = rightRotate(r->right);
+            return leftRotate(r);
+        }
     }
     return r;
 };
 knode* KAVL::rightRotate(knode *z){
-    knode *y = z->left;
-    knode *T3 = y->right;
-    z->left = T3;
-    y->right = z;
-    z->height = getHeight(z);
+    knode *y;
+    knode *t;
+    y = z;
+    t = y->left;
+    y->left = t->right;
+    t->right = y;
     y->height = getHeight(y);
-    return y;
+    t->height = getHeight(t);
+    return t; 
 };
 knode* KAVL::leftRotate(knode *z){
-    knode *y = z->right;
-    knode *T2 = y->left;
-    z->right = T2;
-    y->left = z;
-    z->height = getHeight(z);
+    knode *y;
+    knode *t;
+    y = z;
+    t = y->right;
+    y->right = t->left;
+    t->left = y;
     y->height = getHeight(y);
-    return y;
+    t->height = getHeight(t);
+    return t; 
 };
 knode* KAVL::inOrderPredecessor(knode *r){
-    knode* tmp = r;
+    knode* tmp;
+    tmp = r;
     while(tmp->right != nullptr)
         tmp = tmp->right;
     return tmp;
