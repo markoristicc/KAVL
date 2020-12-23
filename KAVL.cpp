@@ -48,15 +48,12 @@ bool KAVL::search(int w, int f){
 knode* KAVL::approx(int w, int f){
     knode *tmp = root;
     knode *closest = root;
-    double difference = abs(root->whole + (0.1*root->frac) - w - (0.1*f));
-    difference *= 10;
-    int d = difference;
+    int dif = abs(10*root->whole + root->frac - 10*w - f);
+    int d = dif;
     while(tmp != nullptr){
-        difference = abs(tmp->whole + (0.1*tmp->frac) - w - (0.1*f));
-        difference *= 10;
-        int c = d;
-        if(d < c){
-            d = c;
+        dif = abs(10*root->whole + root->frac - 10*w - f);
+        if(d < dif){
+            d = dif;
             closest = tmp;
         }
         if(w < tmp->whole){
@@ -115,6 +112,7 @@ knode* KAVL::insert(knode *r, int w, int f){
             r->left = insert(r->left, w, f);
         else if(f > r->frac)
             r->right = insert(r->right, w, f);
+        else return r;
     }
     r->height = getHeight(r);
     int balance = getBalance(r);
@@ -137,7 +135,7 @@ knode* KAVL::insert(knode *r, int w, int f){
     return r;
 };
 knode* KAVL::del(knode *r, int w, int f){
-    if(r == nullptr)
+    if(r == nullptr )
         return nullptr;
     else if(w < r->whole)
         r->left = del(r->left, w, f);
@@ -151,16 +149,13 @@ knode* KAVL::del(knode *r, int w, int f){
         else{
             if(r->left == nullptr && r->right == nullptr){
                 count--;
-                r = nullptr;
                 delete r;
             }else if(r->left != nullptr){
-                count--;
                 knode *tmp;
                 tmp = inOrderPredecessor(r->left);
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
-                tmp = nullptr;
-                delete tmp;
+                del(r->left, w, f);
             }else if(r->right != nullptr){
                 count--;
                 knode *tmp;
@@ -169,7 +164,6 @@ knode* KAVL::del(knode *r, int w, int f){
                 r->frac = tmp->frac;
                 r->left = tmp->left;
                 r->right = tmp->right;
-                tmp = nullptr;
                 delete tmp; 
             }
         }
@@ -197,20 +191,20 @@ knode* KAVL::del(knode *r, int w, int f){
 knode* KAVL::rightRotate(knode *z){
     knode *y;
     knode *t;
-    y = z;
-    t = y->left;
-    y->left = t->right;
-    t->right = y;
-    return t; 
+    y = z->left;
+    t = y->right;
+    y->right = z;
+    z->left = t;
+    return y; 
 };
 knode* KAVL::leftRotate(knode *z){
     knode *y;
     knode *t;
-    y = z;
-    t = y->right;
-    y->right = t->left;
-    t->left = y;
-    return t; 
+    y = z->right;
+    t = y->left;
+    y->left = z;
+    z->right = t;
+    return y; 
 };
 knode* KAVL::inOrderPredecessor(knode *r){
     knode* tmp;
