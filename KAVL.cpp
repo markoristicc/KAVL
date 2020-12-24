@@ -11,8 +11,6 @@ KAVL::~KAVL(){
     destruct(root);
 };
 bool KAVL::ins(int w, int f){
-    if(m < 10*w + f)
-        m = 10*w + f;
     int tmp = count;
     root = insert(root, w, f);
     if(tmp == count)
@@ -101,9 +99,7 @@ void KAVL::preOrder(knode *r){
 knode* KAVL::insert(knode *r, int w, int f){
     if(r == nullptr){
         count++;
-        knode *n;
-        n = new knode(w,f);
-        r = n;
+        r = new knode(w,f);
         return r;
     }else if(w < r->whole)
         r->left = insert(r->left, w, f);
@@ -137,7 +133,7 @@ knode* KAVL::insert(knode *r, int w, int f){
     return r;
 };
 knode* KAVL::del(knode *r, int w, int f){
-    if(r == nullptr )
+    if(r == nullptr)
         return r;
     else if(w < r->whole)
         r->left = del(r->left, w, f);
@@ -149,22 +145,23 @@ knode* KAVL::del(knode *r, int w, int f){
         else if(f > r->frac)
             r->right = del(r->right, w, f);
         else{
-            if(r->left != nullptr){
-                knode *tmp;
-                tmp = inOrderPredecessor(r->left);
+            if(r->left == nullptr && r->right == nullptr){
+                cout<<"cunt"<<endl;
+                count--;
+                delete (r);
+                return nullptr;
+            }else if(r->left != nullptr){
+                cout<<"tell me"<<endl;
+                knode *tmp = inOrderPredecessor(r->left);
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
-                del(r->left, w, f);
+                del(tmp, tmp->whole, tmp->frac);
             }else if(r->right != nullptr){
+                cout<<"what i dont know"<<endl;
                 count--;
-                knode *tmp = new knode();
-                tmp = r->right;
-                r = nullptr;
+                knode *tmp = r->right;
                 delete r;
                 return tmp;
-            }else{
-                count--;
-                delete r;
             }
         }
     }   
@@ -207,7 +204,7 @@ knode* KAVL::leftRotate(knode *z){
     return y; 
 };
 knode* KAVL::inOrderPredecessor(knode *r){
-    knode* tmp;
+    knode *tmp = new knode();
     tmp = r;
     while(tmp->right != nullptr)
         tmp = tmp->right;
@@ -235,7 +232,7 @@ void KAVL::destruct(knode *r){
     if(r != nullptr){
         destruct(r->left);
         destruct(r->right);
-        r = nullptr;
         delete r;
+        r = nullptr;
     }
 };

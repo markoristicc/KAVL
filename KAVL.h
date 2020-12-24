@@ -23,12 +23,11 @@ class KAVL{
         int getHeight(knode *r);
         int getBalance(knode *r);
         void destruct(knode *r);
+        void random(knode *&p);
         knode *root = nullptr;
         int count = 0;
         int k = 0;
-        int m = 0;
-        int c = 0;
-        //restruct() ---- figure out everything else THEN restruct
+        int c = 0;//used for printing
 };
 
 #endif

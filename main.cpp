@@ -73,4 +73,5 @@ int main(int argc, char *argv[]){
             }
         }
     }
+    return 0; //maybe not the best code but it works, i suppose
 }
