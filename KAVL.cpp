@@ -146,18 +146,15 @@ knode* KAVL::del(knode *r, int w, int f){
             r->right = del(r->right, w, f);
         else{
             if(r->left == nullptr && r->right == nullptr){
-                cout<<"cunt"<<endl;
                 count--;
                 delete (r);
                 return nullptr;
             }else if(r->left != nullptr){
-                cout<<"tell me"<<endl;
                 knode *tmp = inOrderPredecessor(r->left);
                 r->whole = tmp->whole;
                 r->frac = tmp->frac;
                 del(tmp, tmp->whole, tmp->frac);
             }else if(r->right != nullptr){
-                cout<<"what i dont know"<<endl;
                 count--;
                 knode *tmp = r->right;
                 delete r;
